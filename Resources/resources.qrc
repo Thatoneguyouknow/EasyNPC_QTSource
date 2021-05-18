@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/TextFiles">
+        <file alias="Negative.txt">Negative.txt</file>
+        <file alias="Neutral.txt">Neutral.txt</file>
+        <file alias="Positive.txt">Positive.txt</file>
+    </qresource>
+    <qresource prefix="/Images">
+        <file>download.png</file>
+        <file>download.xcf</file>
+        <file>download.xpm</file>
+        <file>pixil-frame-0.png</file>
+        <file>Card.png</file>
+    </qresource>
+</RCC>

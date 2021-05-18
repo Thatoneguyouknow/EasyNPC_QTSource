@@ -1,0 +1,81 @@
+Dice averages:
+d12 or 7, d10 or 6, d8 or 5, d6 or 4, d4 or 2(?)
+
+HP: At level one, max health = max value on hit die + Con modifier. After level one, take (lvl)*Hit Die + con
+
+Weapon (to hit): 1d20 + prof. mod + skill mod (depends on class)
+Weapon (damage): 1(weapon die) + prof. +???
+
+Classes contain:
+Name
+Level
+>Proficiency bonus
+>>Initiative
+Hit Die
+>Health Points
+AC (Armor Class)
+Equipment (choose a, b, or c for 3ish items)
+Background (contains several things)
+Proficiencies (what armor, weapons, and tools youre able to use)
+Skills (choose two from a list based on class)
+Saving throw proficiencies (2 skills)
+Class Features (more unlock as you gain levels)
+Subclass Name
+Subclass Features (more unlock as you gain levels)
+Weapon(s) Name and quantity
+Spell Names (and desciptions)
+Weapon to hit
+Weapon damage
+
+
+1 Barbarian
+Hit Die: d12  
+Max to Min: Str, Con, Wis, Int, Cha, Dex
+
+2 Bard
+Hit Die: d8
+Max to Min: Cha, Dex, Con, Wis, Int, Str 
+
+3 Cleric
+Hit Die: d8
+Max to Min: Wis, Str, Con, Int, Cha, Dex
+
+4 Druid
+Hit Die: d8
+Max to Min: Wis, Con, Int, Cha, Dex, Str
+
+5 Fighter
+Hit Die: d8
+Max to Min: Str (or Dex)*, Con (or Int)**, (Con), (Dex), Wis, Int  
+*Dex for archer/finesse weapon choices
+**Int for Eldritch Knight subclass
+
+6 Monk
+Hit Die: d8
+Max to Min: Dex, Wis, Con, Cha, Str, Int
+
+7 Paladin
+Hit Die: d10
+Max to Min: Str (or Cha)*, (Str or Cha), Con, Wis, Int, Dex 
+*Cha for spell emphasis, can be random
+
+8 Ranger
+Hit Die: d10
+Max to Min: Dex, Wis, Dex, Int, Str, Cha 
+
+9 Rogue
+Hit Die: d8
+Max to Min: Dex, Cha (or Int)*, Con, (Int or Cha), Wis, Str  
+Subclasses:* Thief (Cha), Assassin (Cha), Arcane Trickster (Int)
+
+10 Sorcerer
+Hit Die: d6
+Max to Min: Cha, Con, Dex, Int, Wis, Str
+
+11 Warlock 
+Hit Die: d8
+Max to Min: Cha, Con, Wis, Int, Dex, Str  
+
+12 Wizard 
+Hit Die: d6
+Max to Min: Int, Con, Dex, Wis, Cha, Str 
