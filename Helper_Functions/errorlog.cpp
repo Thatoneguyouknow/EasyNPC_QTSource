@@ -21,17 +21,23 @@ bool checkLogDir()
     }
     else
     {
-        os = "Windows OS";
-        location = "Bruh";
+        QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir check = QDir(logPath);
+        if( !check.exists() )
+        {
+            return false;
+        }
+        return true;
     }
     return false;
 }
 
 
-void logError(int Code, QString toLog, QDir logLoc)
+void logError(int Code, QString toLog)
 {
     QString date = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss");
     QString errCode = QString::number(Code);
+    QDir logLoc = getlogDir();
 
     QFile logFile(logLoc.filePath(logfileName));
     logFile.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -49,9 +55,13 @@ void firstRunSetup()
     {
         createLogDirMac();
     }
-    else
+    else if( os.contains("windows") )
     {
         createLogDirWin();
+    }
+    else
+    {
+        // Throw unsupported OS error
     }
 }
 
@@ -66,44 +76,23 @@ QDir getlogDir()
         logLoc.cd("EasyNPC");
         return logLoc;
     }
-    return QDir::home();
+    else //if it is not mac or windows, unsupported OS error would have been thrown at first startup, thus it must be windows
+    {
+        QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir logLoc = QDir(logPath);
+        return logLoc;
+    }
+    return QDir::current();
 }
 
 void copydataFile()
 {
-    // Data.db stored in "/Applications/EasyNPC/Contents/MacOS"
-    /*QDir dataLoc = QDir::current();
-    QTextStream out(stdout);
-
-    QString dataFile = dataLoc.path();
-    dataFile.append("/data.db");
-    out << dataFile<< Qt::endl;
-
-
-    QString logLoc = getlogDir().path();
-    QString copyLoc = logLoc;
-    copyLoc.append("/data.db");
-    out << copyLoc << Qt::endl;
-
-    if( QFile::exists(copyLoc) )
-    {
-        out << "data File exists" << Qt::endl;
-        QFile::remove(copyLoc);
-    }
-
-    if( !QFile::copy("data.db", "~\\Desktop\\data.db") )
-    {
-        out << "Could not copy file" << Qt::endl;
-    }*/
     QString os = QSysInfo::productType();
     if( os.contains("osx") || os.contains("mac") )
     {
         system(MSHELLSCRIPT);
     }
-    else
-    {
-        // system(WSHELLSCRIPT)
-    }
+    // On Windows, data.db does not need to be copied to another location
 }
 
 void createLogDirMac()
@@ -125,5 +114,36 @@ void createLogDirMac()
 
 void createLogDirWin()
 {
-    //
+    // logdir is C:\Users\$User\AppData\Roaming\$AppName
+    QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir logLoc = QDir(logPath);
+
+    if( !logLoc.cdUp() )
+    {
+        // ErrorCode
+    }
+    else
+    {
+        logLoc.mkdir("EasyNPC");
+    }
+
+    /*QFile test(logLoc.filePath("hello.txt"));
+    test.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&test);
+
+    QString os = QSysInfo::productType();
+    out << "OS: " << os << Qt::endl;
+
+    QString root = QDir::rootPath();
+    out << "Root: " << root << Qt::endl;
+
+    QString testus = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    out << "Write loc: " << testus << Qt::endl;
+
+    QString home = QDir::homePath();
+    out << "Home path: " << home << Qt::endl;
+
+    QString pwd = QDir::currentPath();
+    out << "Current path: " << pwd << Qt::endl;*/
 }
+

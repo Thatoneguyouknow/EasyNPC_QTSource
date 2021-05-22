@@ -1,36 +1,45 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
 
-    os = QSysInfo::productType();
-
-    //ErrorLog test = ErrorLog("errors.log", "/Library/Application Support/EasyNPC");
-
-    // NEW button dropdown menu
+    // Dropdown menu for NEW button
     QMenu *menu = new QMenu(this);
     newButtonActions(menu);
     QFont actionFont = QFont(menu->font());
     actionFont.setPointSize(20);
     menu->setFont(actionFont);
-    ui.NEW->setMenu(menu);
+    ui->NEW->setMenu(menu);
 
-    // Menu Bar setup
+    // MenuBar setup
     menuActions();
     createMenu();
 
+    // Recent view area setup
     QWidget *recent = new QWidget(this);
-    Recents = new QGridLayout(recent);
+    Recents = new QGridLayout();
+    recent->setLayout(Recents);
     Recents->setVerticalSpacing(50);
-    ui.scrollArea->setWidget(recent);
+    ui->scrollArea->setWidgetResizable(true);
+    ui->scrollArea->setWidget(recent);
 
+    cUi = new ClassView(this);
+    connect(cUi, &ClassView::errorCaught, this, &MainWindow::onCodedError);
+    Recents->addWidget(cUi);
+    cUi->hide();
 
-    cUi = new classview(this);
-    rUi = new raceview(this);
+    rUi = new RaceView(this);
+    connect(rUi, &RaceView::errorCaught, this, &MainWindow::onCodedError);
+    Recents->addWidget(rUi);
+    rUi->hide();
+
     map<int, Generator>::iterator it;
     int position = 3;
-    for( it = availableGens.begin(); it != availableGens.end(); it++ )
+    for( it=availableGens.begin(); it!=availableGens.end(); it++ )
     {
         try {
             CharCard* newCard = new CharCard(it->first, this);
@@ -42,28 +51,39 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         }  catch (...) {
             QString error = "Card cannot be created for NPC: ";
             error.append(QString::number(it->first));
-            logError(CardErr, error, getlogDir());
+            logError(CardErr, error);
             onCodedError(CardErr);
         }
     }
 
-    connect(cUi, &classview::errorCaught, this, &MainWindow::onCodedError);
-    Recents->addWidget(cUi);
-    cUi->hide();
+}
 
-    connect(rUi, &raceview::errorCaught, this, &MainWindow::onCodedError);
-    Recents->addWidget(rUi);
-    rUi->hide();
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete cUi;
+    delete rUi;
+    delete Recents;
+
+    delete newMenu;
+    delete fileMenu;
+    delete helpMenu;
+
+    delete newGen;
+    delete newClass;
+    delete newRace;
+    delete aboutAct;
+    delete report;
 }
 
 void MainWindow::menuActions()
 {
-    // new actions set up by newButtonActions
     aboutAct = new QAction("About", this);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(onAbout()));
 
     report = new QAction("Report Bug", this);
-    connect(report, &QAction::triggered, this, &MainWindow::onUncodedError);
+    connect(report, SIGNAL(triggered()), this, SLOT(onUncodedError()));
 }
 
 void MainWindow::createMenu()
@@ -77,11 +97,11 @@ void MainWindow::createMenu()
     fileMenu->addMenu(newMenu);
     fileMenu->addAction(aboutAct);
 
-    ui.menubar->addMenu(fileMenu);
+    ui->menubar->addMenu(fileMenu);
 
     helpMenu = new QMenu("Help");
     helpMenu->addAction(report);
-    ui.menubar->addMenu(helpMenu);
+    ui->menubar->addMenu(helpMenu);
 }
 
 void MainWindow::newButtonActions(QMenu *menu)
@@ -99,6 +119,7 @@ void MainWindow::newButtonActions(QMenu *menu)
     connect(newRace, SIGNAL(triggered()), this, SLOT(on_NewRace()));
 }
 
+
 ///////////////
 /// SLOTS
 ///////////////
@@ -107,6 +128,40 @@ void MainWindow::newButtonActions(QMenu *menu)
 void MainWindow::on_NEW_clicked()
 {
 
+}
+
+void MainWindow::on_NewChar()
+{
+    Generator test = Generator();
+    availableGens.insert(pair<int, Generator>(test.getGenID(), test));
+    edit = new editchar(test.getGenID(), this);
+    connect(edit, &QDialog::accepted, this, &MainWindow::onCharRefresh);
+    connect(edit, &QDialog::rejected, this, &MainWindow::onCharDel);
+    connect(edit, &editchar::errorCaught, this, &MainWindow::onCodedError);
+    edit->show();
+}
+
+void MainWindow::on_NewClass()
+{
+    cUi->newClass();
+}
+
+void MainWindow::on_NewRace()
+{
+    rUi->newRace();
+}
+
+void MainWindow::on_EditChar()
+{
+    CharCard* card = qobject_cast<CharCard*>(sender());
+    if( card != NULL )
+    {
+        edit = new editchar(card->getId(), this);
+        connect(edit, &QDialog::accepted, this, &MainWindow::onCharRefresh);
+        connect(edit, &QDialog::rejected, this, &MainWindow::onCharDel);
+        connect(edit, &editchar::errorCaught, this, &MainWindow::onCodedError);
+        edit->show();
+    }
 }
 
 void MainWindow::on_Characters_clicked()
@@ -127,7 +182,6 @@ void MainWindow::on_Characters_clicked()
 
 void MainWindow::on_Classes_clicked()
 {
-    // Take us to the classes page
     if(cUi->isHidden())
     {
         map<int, CharCard*>::iterator it;
@@ -156,42 +210,6 @@ void MainWindow::on_Races_clicked()
     rUi->refreshRace();
 }
 
-void MainWindow::on_EditChar()
-{
-    CharCard* card = qobject_cast<CharCard*>(sender());
-    if( card != NULL )
-    {
-        edit = new editChar(card->getId(), this);
-        connect(edit, &QDialog::accepted, this, &MainWindow::onCharRefresh);
-        connect(edit, &QDialog::rejected, this, &MainWindow::onCharDel);
-        connect(edit, &editChar::errorCaught, this, &MainWindow::onCodedError);
-        edit->show();
-    }
-}
-
-void MainWindow::on_NewChar()
-{
-    Generator test = Generator();
-    availableGens.insert(pair<int, Generator>(test.getGenID(), test));
-    edit = new editChar(test.getGenID(), this);
-    connect(edit, &QDialog::accepted, this, &MainWindow::onCharRefresh);
-    connect(edit, &QDialog::rejected, this, &MainWindow::onCharDel);
-    connect(edit, &editChar::errorCaught, this, &MainWindow::onCodedError);
-    edit->show();
-}
-
-void MainWindow::on_NewClass()
-{
-    // Create a new Class using newclass.ui
-    cUi->newClass();
-}
-
-void MainWindow::on_NewRace()
-{
-    // Create a new Race using newrace.ui
-    rUi->newRace();
-}
-
 void MainWindow::onCharRefresh()
 {
     // delete all cards
@@ -218,7 +236,7 @@ void MainWindow::onCharRefresh()
         }  catch (...) {
             QString error = "Card cannot be created for NPC: ";
             error.append(QString::number(it->first));
-            logError(CardErr, error, getlogDir());
+            logError(CardErr, error);
             onCodedError(CardErr);
         }
 
@@ -240,31 +258,35 @@ void MainWindow::onCodedError(int code)
 {
     errorDial = new CodedError(code, true, this);
     errorDial->show();
-    //QDesktopServices::openUrl(QUrl::fromEncoded("mailto:someguy@acompany.com?subject=Sending%20File&attachment=path/to/local/file.dat"));
-    // Use QDesktop Services to get data.db file
+    printf("Coded Error\n");
 }
 
 void MainWindow::onUncodedError()
 {
-    logError(0, "User called error", getlogDir());
+    logError(0, "User called error");
     errorDial = new CodedError(0, false, this);
     errorDial->show();
+    printf("Uncoded Error\n");
+}
+
+void MainWindow::onAbout()
+{
+    QMessageBox::about(this, "About EasyNPC", "Created by Benngy\n2021\nBuilt using:\nQTCreator,  SQLite3");
 }
 
 void MainWindow::onQuit()
 {
-    // Save Classes, Races, and Generators
     if( saveClasses() == -1 )
     {
         // throw save error
         onCodedError(-2);
     }
-    saveRaces();
-    saveGens();
-}
-
-void MainWindow::onAbout()
-{
-    // At some point replace this with something better looking
-    QMessageBox::about(this, "About EasyNPC", "Created by Benngy\n2021\nBuilt using:\nQTCreator,  SQLite3");
+    if( saveRaces() == -1 )
+    {
+        onCodedError(-2);
+    }
+    if( saveGens() == -1 )
+    {
+        onCodedError(-2);
+    }
 }

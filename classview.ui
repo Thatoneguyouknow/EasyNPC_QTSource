@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>classview</class>
- <widget class="QWidget" name="classview">
+ <class>ClassView</class>
+ <widget class="QWidget" name="ClassView">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>737</width>
-    <height>511</height>
+    <width>732</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,35 +16,22 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>-1</x>
-     <y>-1</y>
-     <width>641</width>
-     <height>471</height>
+     <x>9</x>
+     <y>9</y>
+     <width>611</width>
+     <height>451</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="1">
-     <widget class="QListWidget" name="ClassList">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="1" column="1">
+     <widget class="QLabel" name="ClassLabel">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>500</width>
-        <height>350</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>600</width>
-        <height>500</height>
-       </size>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::DoubleClicked</set>
+      <property name="text">
+       <string>Classes</string>
       </property>
      </widget>
     </item>
@@ -64,17 +51,8 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Classes</string>
-      </property>
-     </widget>
+    <item row="2" column="1">
+     <widget class="QListWidget" name="ClassList"/>
     </item>
     <item row="0" column="1">
      <spacer name="verticalSpacer">

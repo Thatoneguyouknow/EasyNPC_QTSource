@@ -4,21 +4,24 @@
 #include <QWidget>
 #include <QListWidgetItem>
 #include <QTextStream>
-#include "Attributes/Race.hpp"
-#include "Attributes/Stats.hpp"
+
+#include "Attributes/race.h"
+#include "Attributes/stats.h"
+#include "Helper_Functions/errorlog.h"
+
 #include "newrace.h"
 
 namespace Ui {
-class raceview;
+class RaceView;
 }
 
-class raceview : public QWidget
+class RaceView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit raceview(QWidget *parent = nullptr);
-    ~raceview();
+    explicit RaceView(QWidget *parent = nullptr);
+    ~RaceView();
     void refreshRace();
     void newRace();
 
@@ -26,12 +29,13 @@ signals:
     void errorCaught(int err);
 
 private:
-    Ui::raceview *ui;
-    newrace *edit;
+    Ui::RaceView *ui;
+    NewRace *edit;
 
 private slots:
     void on_race_dc(QListWidgetItem *clicked);
     void onRefreshSignal();
+
 };
 
 static const int raceErr = 1106;

@@ -11,9 +11,9 @@ NewClass::NewClass(QWidget *parent) :
     {
         ui->StatList->addItem(QString::fromStdString(statNames.at(i)));
     }
-    ui->DelButton->setDisabled(true);
-    ui->DelButton->hide();
-    connect(ui->Buttons, SIGNAL(accepted()), this, SLOT(on_Save_clicked()));
+    ui->DeleteButton->setDisabled(true);
+    ui->DeleteButton->hide();
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(on_Save_clicked()));
 }
 
 NewClass::NewClass(int toEdit, QWidget *parent) :
@@ -25,38 +25,35 @@ NewClass::NewClass(int toEdit, QWidget *parent) :
     edit = true;
     classToEdit = toEdit;
 
-    //if(!availableClasses.at(toEdit).getsetUser())
-    //{
-        ui->DelButton->setDisabled(true);
-        ui->DelButton->hide();
-    //}
+    // if this is a user-made class: don't disable delbutton
+    ui->DeleteButton->setDisabled(true);
+    ui->DeleteButton->hide();
 
     ui->Name->setText(QString::fromStdString(availableClasses.at(toEdit).getsetName()));
     ui->HitDie->addItems(hitdieStrs);
 
-    // Catch error 1113 from Stats.cpp
     int hitDiePos = getHdPos(availableClasses.at(toEdit).getsetHitDie());
     if(hitDiePos == -1)
     {
-        // Error has already been logged, output error dialog to user
+        // throw error
         constructErr(hdPosNotFound);
-        // set Current Index to 0
+        // set Current Index to default 0
         hitDiePos = 0;
     }
     ui->HitDie->setCurrentIndex(hitDiePos);
 
     int currentPriority;
-    for(int i=0; i < (int)availableClasses.at(toEdit).getsetPriority().size(); i++ )
+    int size = (int)availableClasses.at(toEdit).getsetPriority().size();
+    for(int i=0; i < size; i++ )
     {
         try {
             currentPriority = availableClasses.at(toEdit).getsetPriority().at(i);
             ui->StatList->addItem(QString::fromStdString(statNames.at(currentPriority)));
         }  catch (...) {
-            // ErrorCode 1105
             constructErr(pListReadErr);
-            QString error = "Priority List Failed Read";
-            logError(pListReadErr, error, getlogDir());
-            // clear StatList, and add default
+            // log error
+
+            // clear statlist, default
             ui->StatList->clear();
             for( int i=0; i < (int)statNames.size(); i++ )
             {
@@ -65,19 +62,18 @@ NewClass::NewClass(int toEdit, QWidget *parent) :
             break;
         }
     }
-    connect(ui->Buttons, SIGNAL(accepted()), this, SLOT(on_Save_clicked()));
-    connect(ui->DelButton, &QPushButton::clicked, this, &NewClass::on_Delete_clicked);
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(on_Save_clicked()));
+    connect(ui->DeleteButton, &QPushButton::clicked, this, &NewClass::on_Delete_clicked);
+}
+
+NewClass::~NewClass()
+{
+    delete ui;
 }
 
 int NewClass::getEdit()
 {
     return classToEdit;
-}
-
-
-NewClass::~NewClass()
-{
-    delete ui;
 }
 
 void NewClass::constructErr(int err)
@@ -154,22 +150,11 @@ void NewClass::on_Save_clicked()
         Class newClass = Class(name, hd, stats, true);
         availableClasses.insert(pair<int, Class>(newClass.getClassID(), newClass));
     }
-    // signal event back to mainwindow to refresh the class list
 
     QDialog::accept();
 }
 
 void NewClass::on_Delete_clicked()
 {
-    map<int, Class>::iterator it;
-    it = availableClasses.find(classToEdit);
-
-    // remove class from SQL
-    removeClass(it->first);
-
-    // remove race from availableClasses
-    availableClasses.erase(it);
-
-    // signal raceview to remove class from list
-    QDialog::reject();
+    printf("Delete Class\n");
 }

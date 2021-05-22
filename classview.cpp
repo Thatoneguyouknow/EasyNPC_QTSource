@@ -1,49 +1,46 @@
 #include "classview.h"
 #include "ui_classview.h"
 
-classview::classview(QWidget *parent) :
+ClassView::ClassView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::classview)
+    ui(new Ui::ClassView)
 {
     ui->setupUi(this);
 
     map<int, Class>::iterator it;
-    for( it=availableClasses.begin(); it!=availableClasses.end(); it++)
+    for( it=availableClasses.begin(); it!=availableClasses.end(); it++ )
     {
         ui->ClassList->addItem(QString::fromStdString(it->second.getsetName()));
     }
     connect(ui->ClassList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(on_class_dc(QListWidgetItem*)));
 }
 
-classview::~classview()
+ClassView::~ClassView()
 {
     delete ui;
 }
 
-void classview::refreshClassList()
+void ClassView::refreshClassList()
 {
     ui->ClassList->clear();
     map<int, Class>::iterator it;
-    for( it=availableClasses.begin(); it!=availableClasses.end(); it++)
+    for( it=availableClasses.begin(); it!=availableClasses.end(); it++ )
     {
         ui->ClassList->addItem(QString::fromStdString(it->second.getsetName()));
     }
 }
 
-void classview::newClass()
+void ClassView::newClass()
 {
     edit = new NewClass(this);
-    connect(edit, &QDialog::accepted, this, &classview::onRefreshSignal);
-    connect(edit, &QDialog::rejected, this, &classview::onClassDelete);
-    connect(edit, &NewClass::errorCaught, this, &classview::recieveError);
+    connect(edit, &QDialog::accepted, this, &ClassView::onRefreshSignal);
+    connect(edit, &QDialog::rejected, this, &ClassView::onClassDelete);
+    connect(edit, &NewClass::errorCaught, this, &ClassView::recieveError);
     edit->show();
 }
 
-void classview::on_class_dc(QListWidgetItem* clicked)
+void ClassView::on_class_dc(QListWidgetItem* clicked)
 {
-    // Open a new character edit window (possibly from mainwindow for parenthood)
-    // Get the index of the generator (based on position in list? Based on name?)
-    // Display generator in character edit window
     int toDisplay = -1;
     map<int, Class>::iterator it;
     for ( it=availableClasses.begin(); it != availableClasses.end() ; it++ )
@@ -53,41 +50,35 @@ void classview::on_class_dc(QListWidgetItem* clicked)
             toDisplay = it->first;
         }
     }
-    if( toDisplay < 0 )
-    {
-        // log error
-        QString error = "Class not found: ";
-        error.append(clicked->text());
-        logError(displayErr, error, getlogDir());
 
+    if(toDisplay < 0)
+    {
+        QString error = "Cannot find class: ";
+        error.append(clicked->text());
+        logError(displayErr, error);
         emit errorCaught(displayErr);
     }
     else
     {
         edit = new NewClass(toDisplay, this);
-        connect(edit, &QDialog::accepted, this, &classview::onRefreshSignal);
-        connect(edit, &QDialog::rejected, this, &classview::onClassDelete);
-        connect(edit, &NewClass::errorCaught, this, &classview::recieveError);
+        connect(edit, &QDialog::accepted, this, &ClassView::onRefreshSignal);
+        connect(edit, &QDialog::rejected, this, &ClassView::onClassDelete);
+        connect(edit, &NewClass::errorCaught, this, &ClassView::recieveError);
         edit->show();
     }
 }
 
-void classview::onRefreshSignal()
+void ClassView::onRefreshSignal()
 {
     refreshClassList();
 }
 
-void classview::onClassDelete()
+void ClassView::onClassDelete()
 {
-    NewClass* toDel = qobject_cast<NewClass*>(sender());
-    if( toDel != NULL )
-    {
-        ui->ClassList->takeItem(toDel->getEdit());
-    }
-    onRefreshSignal();
+    // delete class
 }
 
-void classview::recieveError(int err)
+void ClassView::recieveError(int err)
 {
     emit errorCaught(err);
 }
