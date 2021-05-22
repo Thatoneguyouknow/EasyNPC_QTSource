@@ -7,8 +7,10 @@
 #include <QBrush>
 #include <QPainter>
 #include <QTextStream>
-#include "Generator.hpp"
+
+#include "generator.h"
 #include "editchar.h"
+#include "Helper_Functions/errorlog.h"
 
 namespace Ui {
 class CharCard;
@@ -31,11 +33,10 @@ signals:
 
 private:
     Ui::CharCard *ui;
+
     int charId;
-    editChar *edit;
 
     void setUpWidget();
-
 
 private slots:
     void mouseDoubleClickEvent(QMouseEvent *event);

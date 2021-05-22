@@ -1,43 +1,43 @@
 #include "raceview.h"
 #include "ui_raceview.h"
 
-raceview::raceview(QWidget *parent) :
+RaceView::RaceView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::raceview)
+    ui(new Ui::RaceView)
 {
     ui->setupUi(this);
 
     map<int, Race>::iterator it;
     for( it=availableRaces.begin(); it != availableRaces.end(); it++)
     {
-        ui->raceList->addItem(QString::fromStdString(it->second.getsetName()));
+        ui->RaceList->addItem(QString::fromStdString(it->second.getsetName()));
     }
-    connect(ui->raceList, &QListWidget::itemDoubleClicked, this, &raceview::on_race_dc);
+    connect(ui->RaceList, &QListWidget::itemDoubleClicked, this, &RaceView::on_race_dc);
 }
 
-raceview::~raceview()
+RaceView::~RaceView()
 {
     delete ui;
 }
 
-void raceview::refreshRace()
+void RaceView::refreshRace()
 {
-    ui->raceList->clear();
+    ui->RaceList->clear();
     map<int, Race>::iterator it;
     for( it=availableRaces.begin(); it != availableRaces.end(); it++)
     {
-        ui->raceList->addItem(QString::fromStdString(it->second.getsetName()));
+        ui->RaceList->addItem(QString::fromStdString(it->second.getsetName()));
     }
 }
 
-void raceview::newRace()
+void RaceView::newRace()
 {
-    edit = new newrace(this);
-    connect(edit, &QDialog::finished, this, &raceview::onRefreshSignal);
+    edit = new NewRace(this);
+    connect(edit, &QDialog::finished, this, &RaceView::onRefreshSignal);
     edit->show();
 }
 
-void raceview::on_race_dc(QListWidgetItem* clicked)
+void RaceView::on_race_dc(QListWidgetItem* clicked)
 {
     int toDisplay = -1;
     map<int, Race>::iterator it;
@@ -53,18 +53,18 @@ void raceview::on_race_dc(QListWidgetItem* clicked)
         // log error
         QString error = "Race not found: ";
         error.append(clicked->text());
-        logError(raceErr, error, getlogDir());
+        logError(raceErr, error);
         emit errorCaught(raceErr);
     }
     else
     {
-        edit = new newrace(toDisplay, this);
-        connect(edit, &QDialog::finished, this, &raceview::onRefreshSignal);
+        edit = new NewRace(toDisplay, this);
+        connect(edit, &QDialog::finished, this, &RaceView::onRefreshSignal);
         edit->show();
     }
 }
 
-void raceview::onRefreshSignal()
+void RaceView::onRefreshSignal()
 {
     refreshRace();
 }

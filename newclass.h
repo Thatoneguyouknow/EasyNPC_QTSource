@@ -4,8 +4,10 @@
 #include <QDialog>
 #include <QAction>
 #include <QTextStream>
-#include "Attributes/Stats.hpp"
-#include "Attributes/Class.hpp"
+
+#include "Attributes/class.h"
+#include "Attributes/stats.h"
+#include "Helper_Functions/errorlog.h"
 
 namespace Ui {
 class NewClass;

@@ -2,22 +2,24 @@
 #define CLASSVIEW_H
 
 #include <QWidget>
-#include "Attributes/Class.hpp"
-#include "newclass.h"
 #include <QListWidgetItem>
 #include <QTextStream>
 
+#include "Attributes/class.h"
+#include "newclass.h"
+#include "Helper_Functions/errorlog.h"
+
 namespace Ui {
-class classview;
+class ClassView;
 }
 
-class classview : public QWidget
+class ClassView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit classview(QWidget *parent = nullptr);
-    ~classview();
+    explicit ClassView(QWidget *parent = nullptr);
+    ~ClassView();
     void refreshClassList();
     void newClass();
 
@@ -25,7 +27,7 @@ signals:
     void errorCaught(int err);
 
 private:
-    Ui::classview *ui;
+    Ui::ClassView *ui;
     NewClass *edit;
 
 private slots:

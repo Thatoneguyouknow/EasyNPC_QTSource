@@ -30,7 +30,7 @@ void CharCard::setUpWidget()
     } catch(...) {
         QString error = "Card cannot be read: ";
         error.append(QString::number(charId));
-        logError(genReadErr, error, getlogDir());
+        logError(genReadErr, error);
         emit errorCaught(genReadErr);
 
         // Set defaults "Jeff"
@@ -58,7 +58,7 @@ void CharCard::setUpWidget()
         QString error = "Alignment does not eixst: ";
         error.append(QString::number(bel));
         error.append(QString::number(mor));
-        logError(alignExistErr, error, getlogDir());
+        logError(alignExistErr, error);
         emit errorCaught(alignExistErr);
 
         // Set defaults "Lawful Good"
@@ -74,7 +74,7 @@ void CharCard::setUpWidget()
     }  catch (...) {
         QString error = "Card cannot be read: ";
         error.append(QString::number(charId));
-        logError(genReadErr, error, getlogDir());
+        logError(genReadErr, error);
         emit errorCaught(genReadErr);
 
         // Set defaults "8"
@@ -85,7 +85,6 @@ void CharCard::setUpWidget()
         ui->WisVal->setText(QString::number(8));
         ui->ChaVal->setText(QString::number(8));
     }
-
 }
 
 void CharCard::paintEvent(QPaintEvent *p2)
@@ -98,10 +97,9 @@ void CharCard::paintEvent(QPaintEvent *p2)
         QWidget::paintEvent(p2);
     }  catch (...) {
         QString error = "Image paint error";
-        logError(paintErr, error, getlogDir());
+        logError(paintErr, error);
         emit errorCaught(paintErr);
     }
-
 }
 
 void CharCard::mouseDoubleClickEvent(QMouseEvent *event)
@@ -121,3 +119,4 @@ int CharCard::getId()
 {
     return charId;
 }
+

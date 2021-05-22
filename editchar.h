@@ -2,28 +2,29 @@
 #define EDITCHAR_H
 
 #include <QDialog>
-#include "Generator.hpp"
+#include "generator.h"
+#include "Helper_Functions/errorlog.h"
 
 namespace Ui {
-class editChar;
+class editchar;
 }
 
-class editChar : public QDialog
+class editchar : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit editChar(int toDisplay, QWidget *parent = nullptr);
-    ~editChar();
+    explicit editchar(int toDisplay, QWidget *parent = nullptr);
+    ~editchar();
 
 signals:
     void errorCaught(int err);
 
 private:
-    Ui::editChar *ui;
-    const vector<string> alignStrs = {"Lawful Good", "Lawful Neutral", "Lawful Evil",\
-                                      "Neutral Good", "True Neutral", "Neutral Evil",\
-                                      "Chaotic Good", "Chaotic Neutral", "Chaotic Evil"};
+    Ui::editchar *ui;
+    const vector<string> alignStrs =  {"Lawful Good", "Lawful Neutral", "Lawful Evil",\
+                                       "Neutral Good", "True Neutral", "Neutral Evil",\
+                                       "Chaotic Good", "Chaotic Neutral", "Chaotic Evil"};
     int generator;
     bool hasBeenEdited = false;
 

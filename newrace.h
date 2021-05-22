@@ -4,24 +4,26 @@
 #include <QDialog>
 #include <QAction>
 #include <QTextStream>
-#include "Attributes/Stats.hpp"
-#include "Attributes/Race.hpp"
+
+#include "Attributes/stats.h"
+#include "Attributes/race.h"
+#include "Helper_Functions/errorlog.h"
 
 namespace Ui {
-class newrace;
+class NewRace;
 }
 
-class newrace : public QDialog
+class NewRace : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit newrace(QWidget *parent = nullptr);
-    explicit newrace(int toEdit, QWidget *parent = nullptr);
-    ~newrace();
+    explicit NewRace(QWidget *parent = nullptr);
+    explicit NewRace(int toEdit, QWidget *parent = nullptr);
+    ~NewRace();
 
 private:
-    Ui::newrace *ui;
+    Ui::NewRace *ui;
     bool edit = false;
     int raceToEdit;
 

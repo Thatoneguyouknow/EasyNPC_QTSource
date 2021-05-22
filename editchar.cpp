@@ -1,9 +1,9 @@
 #include "editchar.h"
 #include "ui_editchar.h"
 
-editChar::editChar(int toDisplay, QWidget *parent) :
+editchar::editchar(int toDisplay, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::editChar)
+    ui(new Ui::editchar)
 {
     ui->setupUi(this);
 
@@ -53,46 +53,46 @@ editChar::editChar(int toDisplay, QWidget *parent) :
     ui->NegPerson->setText(availableGens.at(toDisplay).getPersonTrait(2));
 
     // connect buttons
-    connect(ui->ApplyButton, &QPushButton::clicked, this, &editChar::onOk);
-    connect(ui->DelButton, &QPushButton::clicked, this, &editChar::onDelete);
-    connect(ui->NewName, &QPushButton::clicked, this, &editChar::onNewName);
+    connect(ui->ApplyButton, &QPushButton::clicked, this, &editchar::onOk);
+    connect(ui->DelButton, &QPushButton::clicked, this, &editchar::onDelete);
+    connect(ui->NewName, &QPushButton::clicked, this, &editchar::onNewName);
 
     // connect changeable elements to onEdit
-    connect(ui->Name, &QLineEdit::textEdited, this, &editChar::onEdit);
-    connect(ui->LevelSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->HPSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
+    connect(ui->Name, &QLineEdit::textEdited, this, &editchar::onEdit);
+    connect(ui->LevelSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->HPSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
     connect(ui->RaceBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onEdit()));
     connect(ui->ClassBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onEdit()));
     connect(ui->AlignBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onEdit()));
-    connect(ui->StrSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->DexSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->ConSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->IntSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->WisSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->ChaSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editChar::onEdit);
-    connect(ui->PosPerson, &QLineEdit::textEdited, this, &editChar::onEdit);
-    connect(ui->NeuPerson, &QLineEdit::textEdited, this, &editChar::onEdit);
-    connect(ui->NegPerson, &QLineEdit::textEdited, this, &editChar::onEdit);
+    connect(ui->StrSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->DexSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->ConSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->IntSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->WisSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->ChaSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &editchar::onEdit);
+    connect(ui->PosPerson, &QLineEdit::textEdited, this, &editchar::onEdit);
+    connect(ui->NeuPerson, &QLineEdit::textEdited, this, &editchar::onEdit);
+    connect(ui->NegPerson, &QLineEdit::textEdited, this, &editchar::onEdit);
 }
 
-editChar::~editChar()
+editchar::~editchar()
 {
     delete ui;
 }
 
-void editChar::onEdit()
+void editchar::onEdit()
 {
     if(!hasBeenEdited)
     {
         disconnect(ui->ApplyButton, &QPushButton::clicked, this, &QWidget::close);
         // connect Apply button to a different function, the apply button function. Also change button text
         ui->ApplyButton->setText("Save");
-        connect(ui->ApplyButton, &QPushButton::clicked, this, &editChar::onSave);
+        connect(ui->ApplyButton, &QPushButton::clicked, this, &editchar::onSave);
         hasBeenEdited = true;
     }
 }
 
-void editChar::onDelete()
+void editchar::onDelete()
 {
     QTextStream out(stdout);
 
@@ -105,13 +105,13 @@ void editChar::onDelete()
     }  catch (...) {
         QString error = "Could not remove NPC: ";
         error.append(QString::number(generator));
-        logError(removeError, error, getlogDir());
+        logError(removeError, error);
         emit errorCaught(removeError);
     }
     QDialog::reject();
 }
 
-void editChar::onNewName()
+void editchar::onNewName()
 {
     int race = ui->RaceBox->currentIndex();
     int type = availableRaces.at(race).getsetNameType();
@@ -126,7 +126,7 @@ void editChar::onNewName()
     ui->Name->setText(QString::fromStdString(name));
 }
 
-void editChar::onSave()
+void editchar::onSave()
 {
     // get values from each element, and edit Generator with them
     availableGens.at(generator).getsetName(SET, ui->Name->text().toStdString());
@@ -156,14 +156,13 @@ void editChar::onSave()
     availableGens.at(generator).getsetPerson(SET, personalityTratis);
 
     // save NPC in SQL, overwrite current SQL object
-    saveGenerator(availableGens.at(generator));
+    //saveGenerator(availableGens.at(generator));
 
     // close window and refresh char list
     QDialog::accept();
 }
 
-void editChar::onOk()
+void editchar::onOk()
 {
     QDialog::accept();
 }
-
