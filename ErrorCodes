@@ -1,0 +1,44 @@
+1100: mainwindow | card mapping/insert error
+1101: CharCard | Card Init Error
+1102: CharCard | Card Paint Error
+1103: EditChar | Char Delete Error
+1104: classview | Class Does Not Exist Error
+1105: newclass | Priority List Read Error
+1106: raceview | Opening Race Error
+1107: RaceNames | Generating Name Error
+1108: Personality | Cannot Open LineNum File
+1109: Personality | Cannot Open getLine File
+1110: Personality | Line Not Found
+1111: Stats | stat not found
+1112: Stats | HitDie not found
+1113: Stats | HdPosition not found
+1114: CharCard | Alignment does not exist
+1115: Race | Race creation from SQL failed
+1116: Class | Class creation from SQL failed
+1117: Generator | Gen createion from SQL failed
+1118: ClassCard | Card Init Error
+1119: RaceCard | Card Init Error
+
+SQL Errors:
+1201: Database | Cannot open database
+1202: Database | Create Class Table Error
+1203: Database | Create Race Table Error
+1204: Database | Create NPC Table Error
+1205: Race | RaceID does not match SQL race ID
+1206: Race | Cannot open Race database
+1207: Race | SQL Read Failed
+1208: Race | Failed Prepare Statement
+1209: Race | SQL Failed Bind
+1210: Class | ClassID does not match SQL class ID
+1211: Class | Cannot open Class database
+1212: Class | SQL Read Failed
+1213: Class | Failed Prepare Statement
+1214: Class | SQL Failed Bind
+1215: Generator | Cannot open Gen Database
+1216: Generator | Failed Prepare Statement
+1217: Generator | SQL Failed Bind
+1218: Generator | SQL step failed
+1219: Generator | SQL Read Failed
+
+-1: Startup Error
+-2: Close Error
