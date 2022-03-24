@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(RecentView, &MainView::errorCaught, this, &MainWindow::onCodedError);
     ui->scrollArea->setWidgetResizable(true);
     ui->scrollArea->setWidget(RecentView);
-    //area->horizontalScrollBar()->setSingleStep(client->width() / 24);
 }
 
 MainWindow::~MainWindow()
@@ -152,7 +151,7 @@ void MainWindow::onCRefresh()
 void MainWindow::onRRefresh()
 {
     // restore base races
-    generateBaseRaces();
+    // generateBaseRaces();
     printf("Will add functionality after testing");
 }
 

@@ -1,7 +1,7 @@
 #include "editchar.h"
 #include "ui_editchar.h"
 
-editchar::editchar(int toDisplay, QWidget *parent) :
+editchar::editchar(unsigned long toDisplay, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::editchar)
 {
@@ -98,7 +98,7 @@ void editchar::onDelete()
 {
     QTextStream out(stdout);
 
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     it = availableGens.find(generator);
     try {
         // remove NPC object from SQL

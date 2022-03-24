@@ -16,7 +16,7 @@ void MainView::createWindows()
 
 void MainView::createChCards()
 {
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     //if(availableGens.empty())
     //{
     //    QLabel empty = QLabel(emptyChar, this);
@@ -101,7 +101,7 @@ void MainView::refreshChars()
     chCards.clear();
 
     // recreate all cards
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     int position = 3;
     for( it = availableGens.begin(); it != availableGens.end(); it++ )
     {

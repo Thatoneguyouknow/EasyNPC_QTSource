@@ -15,7 +15,7 @@ class editchar : public QDialog
     Q_OBJECT
 
 public:
-    explicit editchar(int toDisplay, QWidget *parent = nullptr);
+    explicit editchar(unsigned long toDisplay, QWidget *parent = nullptr);
     ~editchar();
 
 signals:
@@ -28,7 +28,7 @@ private:
                                        "Chaotic Good", "Chaotic Neutral", "Chaotic Evil"};
     //vector<int> classPos;
     //vector<int> racePos;
-    int generator;
+    unsigned long generator;
     bool hasBeenEdited = false;
 
 private slots:

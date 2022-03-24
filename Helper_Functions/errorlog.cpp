@@ -45,7 +45,6 @@ void logError(int Code, QString toLog)
 QDir getlogDir()
 {
 #ifdef QT_DEBUG
-    qDebug() << QDir::current();
     return QDir::current();
 #elif __APPLE__
     QDir logLoc = QDir::home();

@@ -18,7 +18,6 @@ void setSeed()
 {
     unsigned int seed = (unsigned int)time(NULL);
     srand(seed);
-    //std::cout << "Seed: " << seed << "\n";
 }
 
 bool fileExists(QString file)
@@ -26,11 +25,7 @@ bool fileExists(QString file)
     QDir databaseDir = getlogDir();
     QString database = databaseDir.filePath(file);
     QFileInfo check_file(database);
-    if( check_file.exists() && check_file.isFile() )
-    {
-        return true;
-    }
-    return false;
+    return check_file.exists() && check_file.isFile();
 }
 
 void displayError()

@@ -23,10 +23,10 @@ class Generator
 {
 public:
     Generator(bool empty=false);
-    Generator(int id);
+    Generator(unsigned long id);
 
     // getters and setters
-    int getGenID(bool setFlag=false, int toSet=-1);
+    unsigned long getGenID(bool setFlag=false, unsigned long toSet=-1);
     string getsetName(bool setFlag=false, string toSet="");
     int getsetRace(bool setFlag=false, int toSet=0);
     int getsetClass(bool setFlag=false, int toSet=0);
@@ -42,7 +42,7 @@ public:
 
 private:
     // Objects
-    int ID;
+    unsigned long ID;
     string name;
     int race;
     int charClass;
@@ -53,7 +53,7 @@ private:
     int hp;
 
     //Functions
-    int generateId();
+    unsigned long generateId();
     int generateRace();
     int generateClass();
     array<int, 2> generateAlign();
@@ -62,11 +62,10 @@ private:
     array<int, 6> generateStats(int cClass);
     int calculateHP(int charClass);
 
-    int checkId(int id);
+    unsigned long checkId(unsigned long id);
 };
 
-extern map<int, Generator>availableGens;
-extern int nextGenID;
+extern map<unsigned long, Generator>availableGens;
 
 int rollStat();
 void displayGenerator(Generator display);

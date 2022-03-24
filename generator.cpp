@@ -1,7 +1,6 @@
 #include "generator.h"
 
-map<int, Generator>availableGens;
-int nextGenID = 0;
+map<unsigned long, Generator>availableGens;
 
 Generator::Generator(bool empty)
 {
@@ -22,7 +21,7 @@ Generator::Generator(bool empty)
     }
 }
 
-Generator::Generator(int id)
+Generator::Generator(unsigned long id)
 {
     ID = id;
 }
@@ -88,10 +87,10 @@ int rollStat()
 ///////////////////////
 // Generation Functions
 ///////////////////////
-int Generator::generateId()
+unsigned long Generator::generateId()
 {
     // generate an id
-    int GenId = rand();
+    unsigned long GenId = (unsigned long) rand();
 
     // check that id isn't equal to another generator's id
     GenId = checkId(GenId);
@@ -132,8 +131,8 @@ array<int, 2> Generator::generateAlign()
 int Generator::generateLevel()
 {
     // for now we will only make level 1 characters
-    int cLevel = rand() % 20;
-    cLevel += 1;
+    //int cLevel = rand() % 20;
+    //cLevel += 1;
     return 1;
 }
 
@@ -346,7 +345,7 @@ QString Generator::getPersonTrait(int trait)
     return ret;
 }
 
-int Generator::getGenID(bool setFlag, int toSet)
+unsigned long Generator::getGenID(bool setFlag, unsigned long toSet)
 {
     if(setFlag)
     {
@@ -355,9 +354,9 @@ int Generator::getGenID(bool setFlag, int toSet)
     return ID;
 }
 
-int Generator::checkId(int id)
+unsigned long Generator::checkId(unsigned long id)
 {
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     for( it = availableGens.begin(); it != availableGens.end(); it++ )
     {
         if(it->first == id)
@@ -383,7 +382,7 @@ void deleteGen(int toDel)
 //////////////////////
 int saveGens()
 {
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     for( it=availableGens.begin(); it != availableGens.end(); it++)
     {
         Generator toSave = it->second;
@@ -689,8 +688,8 @@ int sqlToGen(void* data, int argc, char** argv, char** azColName)
     string neuPerson = argv[6];
     string negPerson = argv[7];
 
-    int ID;
-    sscanf(argv[0], "%d", &ID);
+    unsigned long ID;
+    sscanf(argv[0], "%ld", &ID);
 
     Generator newChar = Generator(ID);
 
@@ -837,7 +836,7 @@ void removeAllFromSQL()
                         "WHERE ID = ?;";
     sqlite3_stmt* insert_stmt = NULL;
 
-    map<int, Generator>::iterator it;
+    map<unsigned long, Generator>::iterator it;
     for( it = availableGens.begin(); it != availableGens.end(); it++)
     {
         sqlite3* db;
