@@ -2,33 +2,28 @@
 
 bool checkLogDir()
 {
-    QString os = QSysInfo::productType();
-    QString location;
-    if( os.contains("osx") || os.contains("mac") )
+#if __APPLE__
+    QDir check = QDir::home();
+    if(!check.cd("Library"))
     {
-        QDir check = QDir::home();
-        if(!check.cd("Library"))
-        {
-            return false;
-        } else if(!check.cd("Application Support"))
-        {
-            return false;
-        } else if(!check.cd("EasyNPC"))
-        {
-            return false;
-        }
-        return true;
-    }
-    else
+        return false;
+    } else if(!check.cd("Application Support"))
     {
-        QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        QDir check = QDir(logPath);
-        if( !check.exists() )
-        {
-            return false;
-        }
-        return true;
+        return false;
+    } else if(!check.cd("EasyNPC"))
+    {
+        return false;
     }
+    return true;
+#elif defined(WIN32) or defined (WIN64)
+    QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir check = QDir(logPath);
+    if( !check.exists() )
+    {
+        return false;
+    }
+    return true;
+#endif
     return false;
 }
 
@@ -50,49 +45,30 @@ void logError(int Code, QString toLog)
 
 QDir getlogDir()
 {
-    QString os = QSysInfo::productType();
-    if( os.contains("osx") || os.contains("mac") )
-    {
-        QDir logLoc = QDir::home();
-        logLoc.cd("Library");
-        logLoc.cd("Application Support");
-        logLoc.cd("EasyNPC");
-        return logLoc;
-    }
-    else //if it is not mac or windows, unsupported OS error would have been thrown at first startup, thus it must be windows
-    {
-        QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        QDir logLoc = QDir(logPath);
-        return logLoc;
-    }
+#ifdef QT_DEBUG
+    qDebug() << QDir::current();
     return QDir::current();
+#elif __APPLE__
+    QDir logLoc = QDir::home();
+    logLoc.cd("Library");
+    logLoc.cd("Application Support");
+    logLoc.cd("EasyNPC");
+    return logLoc;
+#elif defined (WIN32) or defined(WIN64)
+    QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir logLoc = QDir(logPath);
+    return logLoc;
+#else
+    return QDir::current();
+#endif
 }
 
 void copydataFile()
 {
-    QString os = QSysInfo::productType();
-    if( os.contains("osx") || os.contains("mac") )
-    {
+    #if __APPLE__
         system(MSHELLSCRIPT);
-    }
+    #endif
     // On Windows, data.db does not need to be copied to another location
-}
-
-void createLogDirMac()
-{
-    QDir logLoc = QDir::home();
-    if(!logLoc.cd("Library"))
-    {
-        // ErrorCode
-    }
-    else if(!logLoc.cd("Application Support"))
-    {
-        // ErrorCode
-    }
-    else
-    {
-        logLoc.mkdir("EasyNPC");
-    }
 }
 
 void createLogDir()
