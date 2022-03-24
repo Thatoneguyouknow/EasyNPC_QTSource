@@ -2,7 +2,10 @@
 
 bool checkLogDir()
 {
-#if __APPLE__
+#ifdef QT_DEBUG
+    QDir check = QDir::current();
+    return check.exists();
+#elif __APPLE__
     QDir check = QDir::home();
     if(!check.cd("Library"))
     {
@@ -18,11 +21,7 @@ bool checkLogDir()
 #elif defined(WIN32) or defined (WIN64)
     QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir check = QDir(logPath);
-    if( !check.exists() )
-    {
-        return false;
-    }
-    return true;
+    return check.exists();
 #endif
     return false;
 }
