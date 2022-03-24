@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QtDebug>
 
 #include <stdio.h>
 
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    firstRunSetup();
+    createLogDir();
     setSeed();
 
     createMap();

@@ -20,10 +20,8 @@ const QString logfileName = "errors.log";
 const QString dbFileName = "data.db";
 
 void logError(int Code, QString toLog);
-void firstRunSetup();
 bool checkLogDir();
-void createLogDirMac();
-void createLogDirWin();
+void createLogDir();
 void copydataFile();
 QDir getlogDir();
 

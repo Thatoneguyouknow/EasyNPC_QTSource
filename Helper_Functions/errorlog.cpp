@@ -48,23 +48,6 @@ void logError(int Code, QString toLog)
     copydataFile();
 }
 
-void firstRunSetup()
-{
-    QString os = QSysInfo::productType();
-    if( os.contains("osx") || os.contains("mac") )
-    {
-        createLogDirMac();
-    }
-    else if( os.contains("windows") )
-    {
-        createLogDirWin();
-    }
-    else
-    {
-        // Throw unsupported OS error
-    }
-}
-
 QDir getlogDir()
 {
     QString os = QSysInfo::productType();
@@ -112,38 +95,32 @@ void createLogDirMac()
     }
 }
 
-void createLogDirWin()
+void createLogDir()
 {
-    // logdir is C:\Users\$User\AppData\Roaming\$AppName
+#if __APPLE__
+    QDir logLoc = QDir::home();
+    if (!logLoc.cd("Library"))
+    {
+        // Error
+    }
+    else if( !logLoc.cd("Application Support"))
+    {
+        // Error
+    }
+    else {
+        logLoc.mkdir("EasyNPC")
+    }
+#elif defined(WIN32) or defined(WIN64)
     QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir logLoc = QDir(logPath);
-
-    if( !logLoc.cdUp() )
+    if( !logLoc.cdUp())
     {
-        // ErrorCode
+        //Error
     }
     else
     {
         logLoc.mkdir("EasyNPC");
     }
-
-    /*QFile test(logLoc.filePath("hello.txt"));
-    test.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream out(&test);
-
-    QString os = QSysInfo::productType();
-    out << "OS: " << os << Qt::endl;
-
-    QString root = QDir::rootPath();
-    out << "Root: " << root << Qt::endl;
-
-    QString testus = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    out << "Write loc: " << testus << Qt::endl;
-
-    QString home = QDir::homePath();
-    out << "Home path: " << home << Qt::endl;
-
-    QString pwd = QDir::currentPath();
-    out << "Current path: " << pwd << Qt::endl;*/
+#endif
 }
 
