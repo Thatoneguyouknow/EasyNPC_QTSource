@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     Attributes/alignment.cpp \
+    Attributes/attributesaver.cpp \
     Attributes/class.cpp \
     Attributes/race.cpp \
     Attributes/stats.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     Attributes/alignment.h \
+    Attributes/attributesaver.h \
     Attributes/class.h \
     Attributes/race.h \
     Attributes/stats.h \

@@ -48,7 +48,6 @@ int sqlToClass(void* data, int argc, char** argv, char** azColName);
 int readClasses();
 void removeClass(int toRemove);
 void removeAllClasses();
-void displayClass(Class toDisplay);
 
 static const int cCreateErr = 1116;
 static const int cDbErr = 1201;
