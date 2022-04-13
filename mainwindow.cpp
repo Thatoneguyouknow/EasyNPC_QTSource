@@ -183,15 +183,25 @@ void MainWindow::onAbout()
 
 void MainWindow::onQuit()
 {
-    if( saveClasses() == -1 )
+    ClassSaver classSaver = ClassSaver();
+    if( classSaver.saveAttributes() == -1)
+    {
+        onCodedError(-2);
+    }
+    RaceSaver raceSaver = RaceSaver();
+    if( raceSaver.saveAttributes() == -1)
+    {
+        onCodedError(-2);
+    }
+    /*if( saveClasses() == -1 )
     {
         // throw save error
         onCodedError(-2);
-    }
-    if( saveRaces() == -1 )
+    }*/
+    /*if( saveRaces() == -1 )
     {
         onCodedError(-2);
-    }
+    }*/
     if( saveGens() == -1 )
     {
         onCodedError(-2);

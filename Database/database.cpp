@@ -13,6 +13,8 @@ int callback(void *data, int argc, char **argv, char **azColName)
    return 0;
 }
 
+// Use a seperate connection header to statically open the database
+
 int createTables()
 {
     // open database connection

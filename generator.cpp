@@ -361,8 +361,7 @@ unsigned long Generator::checkId(unsigned long id)
     {
         if(it->first == id)
         {
-            id++;
-            return checkId(id);
+            return checkId(id++);
         }
     }
     return id;

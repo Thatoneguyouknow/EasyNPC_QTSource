@@ -20,6 +20,7 @@ class Class
 public:
     Class();
     Class(string name, int hitdie, array<int, 6> priority, int userMade);
+    Class(int id, string name, int hitdie, array<int, 6> priority, int userMade);
     ~Class();
 
     string getsetName(bool setFlag=false, string toSet="");
@@ -29,6 +30,9 @@ public:
     int getClassID();
 
 private:
+    int generateId();
+    int checkId(int toCheck);
+
     int classID;
     string name;
     int userCreated;
@@ -37,7 +41,6 @@ private:
 };
 
 extern map<int, Class> availableClasses;
-extern int nextClassID;
 
 void generateBaseClasses();
 

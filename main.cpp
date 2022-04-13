@@ -7,7 +7,10 @@
 #include <stdio.h>
 
 #include "generator.h"
-#include "Helper_Functions/database.h"
+#include "Database/database.h"
+#include "Database/dbConnection.h"
+
+//#define CLEAR_DB
 
 #if __APPLE__
 #include <unistd.h>
@@ -41,6 +44,24 @@ int main(int argc, char *argv[])
 
     createLogDir();
     setSeed();
+    if(!createConnection())
+    {
+        //error
+        qDebug() << "Error has occured in main";
+        displayError();
+        return 0;
+    }
+
+    ClassSaver classSaver = ClassSaver();
+    RaceSaver raceSaver = RaceSaver();
+
+#ifdef CLEAR_DB
+    classSaver.removeAllAttributes();
+    raceSaver.removeAllAttributes();
+#endif
+
+    classSaver.readAttributes();
+    raceSaver.readAttributes();
 
     createMap();
 
@@ -67,7 +88,7 @@ int main(int argc, char *argv[])
             displayError();
             return 0;
         }
-        else if( readClasses() == -1 )
+        /*else if( readClasses() == -1 )
         {
             debug << "Could not read classes" << Qt::endl;
             displayError();
@@ -78,12 +99,11 @@ int main(int argc, char *argv[])
             debug << "Could not read races" << Qt::endl;
             displayError();
             return 0;
-        }
+        }*/
     }
 
     MainWindow mainWindow;
     mainWindow.show();
-
 
     // On exit, have everything saved
     QObject::connect(&a, SIGNAL(aboutToQuit()), &mainWindow, SLOT(onQuit()));

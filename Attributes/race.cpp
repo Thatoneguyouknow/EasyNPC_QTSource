@@ -1,7 +1,5 @@
 #include "race.h"
 
-int nextRaceID = 0;
-int nexSubID = 0;
 map<int, Race> availableRaces;
 
 // A function to generate all races in the base Dnd5e set. Will be called upon first start of application.
@@ -72,8 +70,27 @@ Race::Race()
 
 Race::Race(string name, int asiStatPrim, int asiStatSec, int asiValPrim, int asiValSec, int maxAge, int minAge, int type)
 {
-    raceIdentifier = nextRaceID;
-    nextRaceID++;
+    raceIdentifier = generateId();
+    raceName = name;
+    asiStatPrimary = asiStatPrim;
+    asiStatSecondary = asiStatSec;
+    asiValPrimary = asiValPrim;
+    asiValSecondary = asiValSec;
+    ageMax = maxAge;
+    ageMin = minAge;
+    if(type == NOTYPE)
+    {
+        nameType = raceIdentifier;
+    }
+    else
+    {
+        nameType = type;
+    }
+}
+
+Race::Race(int ID, string name, int asiStatPrim, int asiStatSec, int asiValPrim, int asiValSec, int maxAge, int minAge, int type)
+{
+    raceIdentifier = ID;
     raceName = name;
     asiStatPrimary = asiStatPrim;
     asiStatSecondary = asiStatSec;
@@ -94,6 +111,26 @@ Race::Race(string name, int asiStatPrim, int asiStatSec, int asiValPrim, int asi
 Race::~Race()
 {
 
+}
+
+int Race::generateId()
+{
+    int id = (int) rand();
+    id = checkId(id);
+    return id;
+}
+
+int Race::checkId(int toCheck)
+{
+    map<int, Race>::iterator it;
+    for( it=availableRaces.begin(); it != availableRaces.end(); it++ )
+    {
+        if(it->first == toCheck)
+        {
+            return checkId(toCheck++);
+        }
+    }
+    return toCheck;
 }
 
 //////////////////////

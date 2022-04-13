@@ -11,7 +11,9 @@
 
 #include "mainview.h"
 #include "codederror.h"
-#include "Helper_Functions/database.h"
+#include "Database/database.h"
+#include "Database/classsaver.h"
+#include "Database/racesaver.h"
 
 #include "generator.h"
 #include "Helper_Functions/errorlog.h"

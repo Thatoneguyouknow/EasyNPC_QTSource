@@ -22,6 +22,7 @@ class Race
 public:
     Race();
     Race(string name, int asiStatPrim, int asiStatSec, int asiValPrim, int asiValSec, int maxAge, int minAge, int type=NOTYPE);
+    Race(int ID, string name, int asiStatPrim, int asiStatSec, int asiValPrim, int asiValSec, int maxAge, int minAge, int type=NOTYPE);
     ~Race();
 
     // getters and setters
@@ -36,6 +37,9 @@ public:
     int getIdentifier();
 
 private:
+    int generateId();
+    int checkId(int toCheck);
+
     int raceIdentifier;
     string raceName;
     int asiStatPrimary;
@@ -48,7 +52,6 @@ private:
 };
 
 extern map<int, Race> availableRaces;
-extern int nextRaceID;
 
 void generateBaseRaces();
 

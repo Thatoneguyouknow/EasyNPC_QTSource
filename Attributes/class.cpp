@@ -1,6 +1,5 @@
 #include "class.h"
 
-int nextClassID = 100;
 map<int, Class> availableClasses;
 
 void generateBaseClasses()
@@ -72,8 +71,16 @@ Class::Class()
 
 Class::Class(string cName, int hitdie, array<int, 6> priority, int userMade)
 {
-    classID = nextClassID;
-    nextClassID++;
+    classID = generateId();
+    name = cName;
+    hitDie = hitdie;
+    statPriority = priority;
+    userCreated = userMade;
+}
+
+Class::Class(int id, string cName, int hitdie, array<int, 6> priority, int userMade)
+{
+    classID = id;
     name = cName;
     hitDie = hitdie;
     statPriority = priority;
@@ -83,6 +90,26 @@ Class::Class(string cName, int hitdie, array<int, 6> priority, int userMade)
 Class::~Class()
 {
 
+}
+
+int Class::generateId()
+{
+    int id = (int) rand();
+    id = checkId(id);
+    return id;
+}
+
+int Class::checkId(int id)
+{
+    map<int, Class>::iterator it;
+    for( it=availableClasses.begin(); it != availableClasses.end(); it++ )
+    {
+        if(it->first == id)
+        {
+            return checkId(id++);
+        }
+    }
+    return id;
 }
 
 string Class::getsetName(bool setFlag, string toSet)

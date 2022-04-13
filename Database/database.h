@@ -2,11 +2,12 @@
 #define DATABASE_H
 
 #include <stdio.h>
-#include "sqlite3.h"
+#include "Helper_Functions/sqlite3.h"
 
 #include "Helper_Functions/errorlog.h"
 
 #include <QString>
+#include <QtSql>
 
 using namespace std;
 

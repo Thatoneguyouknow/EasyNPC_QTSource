@@ -10,13 +10,16 @@ CONFIG += c++11
 
 SOURCES += \
     Attributes/alignment.cpp \
-    Attributes/attributesaver.cpp \
     Attributes/class.cpp \
     Attributes/race.cpp \
     Attributes/stats.cpp \
-    Helper_Functions/database.cpp \
+    Database/classsaver.cpp \
+    Database/qdatabasetest.cpp \
+    Database/racesaver.cpp \
     Helper_Functions/errorlog.cpp \
     Helper_Functions/racenames.cpp \
+    Database/database.cpp \
+    Database/attributesaver.cpp \
     card.cpp \
     charcard.cpp \
     classcard.cpp \
@@ -34,13 +37,17 @@ SOURCES += \
 
 HEADERS += \
     Attributes/alignment.h \
-    Attributes/attributesaver.h \
     Attributes/class.h \
     Attributes/race.h \
     Attributes/stats.h \
-    Helper_Functions/database.h \
+    Database/classsaver.h \
+    Database/dbConnection.h \
+    Database/qdatabasetest.h \
+    Database/racesaver.h \
     Helper_Functions/errorlog.h \
     Helper_Functions/racenames.h \
+    Database/database.h \
+    Database/attributesaver.h \
     card.h \
     charcard.h \
     classcard.h \
@@ -79,4 +86,3 @@ DISTFILES += \
     Negative.txt \
     Neutral.txt \
     Positive.txt
-
