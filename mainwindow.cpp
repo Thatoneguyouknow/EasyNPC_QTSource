@@ -193,16 +193,8 @@ void MainWindow::onQuit()
     {
         onCodedError(-2);
     }
-    /*if( saveClasses() == -1 )
-    {
-        // throw save error
-        onCodedError(-2);
-    }*/
-    /*if( saveRaces() == -1 )
-    {
-        onCodedError(-2);
-    }*/
-    if( saveGens() == -1 )
+    NpcSaver npcSaver = NpcSaver();
+    if( npcSaver.saveAttributes() == -1)
     {
         onCodedError(-2);
     }

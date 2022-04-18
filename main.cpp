@@ -54,20 +54,33 @@ int main(int argc, char *argv[])
 
     ClassSaver classSaver = ClassSaver();
     RaceSaver raceSaver = RaceSaver();
+    NpcSaver genSaver = NpcSaver();
 
 #ifdef CLEAR_DB
     classSaver.removeAllAttributes();
     raceSaver.removeAllAttributes();
+    genSaver.removeAllAttributes();
 #endif
 
     classSaver.readAttributes();
     raceSaver.readAttributes();
+    if(availableRaces.empty())
+    {
+        generateBaseRaces();
+        qDebug() << "Generating base races";
+    }
+    if(availableClasses.empty())
+    {
+        generateBaseClasses();
+        qDebug() << "Generating base classes";
+    }
+    genSaver.readAttributes();
 
     createMap();
 
     QTextStream debug(stdout);
 
-    if( !fileExists("data.db"))
+    /*if( !fileExists("data.db"))
     {
         debug << "Generating base classes: " << Qt::endl;
         generateBaseClasses();
@@ -88,7 +101,7 @@ int main(int argc, char *argv[])
             displayError();
             return 0;
         }
-        /*else if( readClasses() == -1 )
+        else if( readClasses() == -1 )
         {
             debug << "Could not read classes" << Qt::endl;
             displayError();
@@ -99,8 +112,8 @@ int main(int argc, char *argv[])
             debug << "Could not read races" << Qt::endl;
             displayError();
             return 0;
-        }*/
-    }
+        }
+    }*/
 
     MainWindow mainWindow;
     mainWindow.show();

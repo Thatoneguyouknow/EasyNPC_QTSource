@@ -24,6 +24,8 @@ class Generator
 public:
     Generator(bool empty=false);
     Generator(unsigned long id);
+    Generator(unsigned long id, string Name, int raceId, int classId, array<int, 2> align,
+              QString personality, int level, int hp, array<int, 6> stats);
 
     // getters and setters
     unsigned long getGenID(bool setFlag=false, unsigned long toSet=-1);

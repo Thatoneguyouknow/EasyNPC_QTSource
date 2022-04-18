@@ -26,6 +26,26 @@ Generator::Generator(unsigned long id)
     ID = id;
 }
 
+Generator::Generator(unsigned long id, string Name, int raceId, int classId, array<int, 2> align,
+          QString person, int lvl, int HP, array<int, 6> Stats)
+{
+    ID = id;
+    name = Name;
+    race = raceId;
+    charClass = classId;
+    alignment[0] = align[0];
+    alignment[1] = align[1];
+    personality = person;
+    level = lvl;
+    hp = HP;
+    stats[0] = Stats[0];
+    stats[1] = Stats[1];
+    stats[2] = Stats[2];
+    stats[3] = Stats[3];
+    stats[4] = Stats[4];
+    stats[5] = Stats[5];
+}
+
 void displayGenerator(Generator display)
 {
     cout << "Name: " << display.getsetName() << "\n";

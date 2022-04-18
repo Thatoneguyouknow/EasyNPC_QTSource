@@ -14,6 +14,7 @@
 #include "Database/database.h"
 #include "Database/classsaver.h"
 #include "Database/racesaver.h"
+#include "Database/npcsaver.h"
 
 #include "generator.h"
 #include "Helper_Functions/errorlog.h"

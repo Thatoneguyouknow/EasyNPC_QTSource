@@ -14,6 +14,7 @@ SOURCES += \
     Attributes/race.cpp \
     Attributes/stats.cpp \
     Database/classsaver.cpp \
+    Database/npcsaver.cpp \
     Database/qdatabasetest.cpp \
     Database/racesaver.cpp \
     Helper_Functions/errorlog.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     Attributes/stats.h \
     Database/classsaver.h \
     Database/dbConnection.h \
+    Database/npcsaver.h \
     Database/qdatabasetest.h \
     Database/racesaver.h \
     Helper_Functions/errorlog.h \
